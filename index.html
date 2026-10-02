@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Любимому папе — С днём рождения!</title>
+    <style>
+        :root {
+            --wine-matte: #4a2327;    /* Приглушенный матовый заголовок */
+            --peach-dust: #eed6ca;    /* Мягкий пыльно-персиковый оттенок */
+            --peach-light: #f9f2ef;   /* Нежнейший пастельно-персиковый фон карточек */
+            --bg-creme: #fcf9f7;      /* Очень светлый матовый фон сайта */
+            --text-dark: #332527;     /* Мягкий темный текст */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-creme);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            margin: 20px auto 40px auto;
+            max-width: 750px;
+            background: var(--peach-light);
+            border: 1px solid var(--peach-dust);
+            border-radius: 24px;
+            box-shadow: 0 4px 15px rgba(238, 214, 202, 0.2);
+        }
+
+        header h1 {
+            font-size: 2.6rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: var(--wine-matte);
+            letter-spacing: 0.5px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            line-height: 1.7;
+            opacity: 0.9;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(238, 214, 202, 0.15);
+            cursor: pointer;
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.3s ease;
+            position: relative;
+            border: 1px solid rgba(238, 214, 202, 0.4);
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(238, 214, 202, 0.35);
+        }
+
+        .card-image-wrapper {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            background-color: var(--peach-light);
+            position: relative;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.04);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--wine-matte);
+            color: var(--peach-dust);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .card-info {
+            padding: 22px 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: var(--wine-matte);
+            background: #ffffff;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 1px solid rgba(238, 214, 202, 0.3);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(51, 37, 39, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+            padding: 20px;
+            backdrop-filter: blur(6px);
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 45px 35px;
+            border-radius: 24px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            transform: scale(0.92);
+            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: 2px solid var(--peach-dust);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2.2rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #a38f8c;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            color: var(--wine-matte);
+        }
+
+        .modal-text {
+            font-size: 1.25rem;
+            color: var(--text-dark);
+            line-height: 1.7;
+        }
+
+        @media (max-width: 1024px) {
+            .grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        }
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: repeat(2, 1fr); }
+            header h1 { font-size: 2.2rem; }
+        }
+        @media (max-width: 480px) {
+            .grid { grid-template-columns: 1fr; }
+            body { padding: 10px; }
+            header { padding: 30px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Любимому папе</h1>
+            <p>Этот сайт — коробочка с нашими самыми теплыми воспоминаниями и важными пожеланиями для тебя, которые так хочется сказать тебе сегодня.</p>
+        </header>
+
+        <div class="grid" id="wishesGrid">
+            <!-- Карточки -->
+        </div>
+    </div>
+
+    <div class="modal" id="wishModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeModal">&times;</button>
+            <div class="modal-text" id="modalText">Текст поздравления...</div>
+        </div>
+    </div>
+
+    <script>
+        const wishesData = [
+            {
+                img: "photo1",
+                title: "Здоровья",
+                wish: "Пусть здоровья хватает на всё, что тебе хочется делать, а каждый новый день приносит спокойствие и силы."
+            },
+            {
+                img: "photo2",
+                title: "Финансового благополучия",
+                wish: "Желаю тебе достатка, финансовой уверенности и возможностей воплощать все свои мечты."
+            },
+            {
+                img: "photo3",
+                title: "Радости",
+                wish: "Желаю замечать больше хорошего в обычных днях и находить поводы улыбаться даже тогда, когда день начинается совсем обычно."
+            },
+            {
+                img: "photo4",
+                title: "Спокойствия",
+                wish: "Пусть в жизни будет больше тихих вечеров, приятных разговоров и ощущения, что всё самое важное находится рядом."
+            },
+            {
+                img: "photo5",
+                title: "Удачи",
+                wish: "Желаю, чтобы нужные возможности появлялись вовремя, решения давались легко, а задуманное постепенно становилось реальностью."
+            },
+            {
+                img: "photo6",
+                title: "Хороших людей",
+                wish: "Пусть рядом встречаются надёжные, добрые и искренние люди, с которыми легко строить планы и приятно проводить время."
+            },
+            {
+                img: "photo7",
+                title: "Больше поводов для гордости",
+                wish: "Пусть рядом встречаются надёжные, добрые и искренние люди, с которыми легко строить планы и приятно проводить время."
+            },
+            {
+                img: "photo8",
+                title: "Тепла и уюта",
+                wish: "Желаю возвращаться домой с ощущением тепла и знать, что здесь тебя любят, ждут и всегда рады тебе."
+            },
+            {
+                img: "photo9",
+                title: "Добра и приятных эмоций",
+                wish: "Пусть в твоём сердце всегда живут доброта, спокойствие и радость, а каждый день приносит тёплые и приятные эмоции."
+            },
+            {
+                img: "photo10",
+                title: "Море путешествий",
+                wish: "Пусть впереди будет ещё много мест, которые захочется увидеть, дорог, по которым захочется проехать, и историй, которые потом приятно вспоминать."
+            },
+            {
+                img: "photo11",
+                title: "Всего наилучшего",
+                wish: "Пусть судьба щедро подарит тебе здоровье, счастье, душевный покой и всё самое лучшее."
+            },
+            {
+                img: "photo12",
+                title: "Сил и крепкой выдержки",
+                wish: "Пусть сил хватает не только на обязанности, но и на мечты,伴ланы и всё то, что давно хотелось попробовать."
+            },
+            {
+                img: "photo13",
+                title: "Чтобы твои труды ценили по достоинству",
+                wish: "Пусть каждый твой труд будет замечен, а старания — встречены искренней благодарностью и заслуженным признанием."
+            },
+            {
+                img: "photo14",
+                title: "Веры в себя",
+                wish: "Верь в себя так же сильно, как я верю в тебя, ведь ты способен преодолеть любые трудности."
+            },
+            {
+                img: "photo15",
+                title: "Семейного счастья", 
+                wish: "Пусть рядом всегда будут люди, с которыми можно быть собой, смеяться, разговаривать обо всём и просто молчать."
+                },
+                {
+                img: "photo16",
+                title: "Целеустремленности",
+                wish: "Желаю тебе целеустремлённости, сил и уверенности, чтобы достигать всего, чего ты по-настоящему хочешь."
+                }
+                ];
+const grid = document.getElementByld('wishesGrid');
+const modal = document.getElementByld('wishModal');
+const modalText = document.getElementByld('modalText');
+const closeModal = document.getElementByld('closeModal');
+wishesData.forEach((data, index) => {
+const card = document.createElement('div');
+card.className = 'card';
+const mainSrc = ${data.img}.jpg.WEBP ;
+const fallbackSvg = data: image/svg+xml;utf8,<svg xmlns='http://w3.org' width='100%' height='100%' viewBox='0 0 100 100'><rect width='100%'
+height='100%' fill='%23f9f2ef'/><text x='50%' y='50%' font-family='sans-serif' font-size='5' fill='%234a2327' text-anchor='middle' dy='.3em'>Фото ${index + 1}</text></svg>;
+card.innerHTML = <div class="card-image-wrapper"> <span class="card-badge">#${index + 1}</span> <img src="${mainSrc}"
+alt="${data. title}" onerror="this. onerror=function() {this. src='${data. img} WEBP'; this. onerror=function() {this. src='${data. img} jpg'; this.onerror=function() {this. src='${fallbackSvg}' ;}}}}();"› </div> <div class="card-info">${data.title}</div>;
+card.addEventListener('click', () => {
+modalText.innerHTML = data.wish;
+modal.classList.add('active');
+});
+
+grid.appendChild(card);
+});
+closeModal.addEventListener('click', () => modal.classList.remove('active'));
+modal.addEventListener('click', (e) => {
+if (e.target === modal) modal.classList.remove('active');
+});
+
